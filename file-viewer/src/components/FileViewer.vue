@@ -43,17 +43,17 @@ const currentDirPath = computed(() => {
   }
 });
 
-const updateDir = async () => {
+const updateFiles = async () => {
   const data = await fetchDir(route.query.path);
   files.value = data;
 };
 
 onMounted(() => {
-  updateDir();
+  updateFiles();
 });
 
 watch(route, () => {
-  updateDir();
+  updateFiles();
 });
 
 const folderUpHref = computed(() => {

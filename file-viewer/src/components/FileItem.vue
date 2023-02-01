@@ -58,7 +58,3 @@ let nextPath;
 });
 
 </script>
-
-<style>
-
-</style>
