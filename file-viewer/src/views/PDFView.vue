@@ -17,6 +17,4 @@ const fullPath = computed(() => {
   return `lib/pdfjs-3.3.122-dist/web/viewer.html?file=${fileUrl}`;
 });
 
-console.log(fullPath.value);
-
 </script>
