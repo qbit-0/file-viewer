@@ -57,7 +57,9 @@ watch([route], () => {
 })
 
 const handleFolderUp = () => {
-  router.push({ name: "files", query: { path: route.query.path.split("/").slice(0, -1).join("/")} });
+  if (route.query) {
+    router.push({ name: "files", query: { path: route.query.path.split("/").slice(0, -1).join("/")} });
+  }
 }
 
 </script>
