@@ -6,6 +6,7 @@ const routes = [
   { path: "/", redirect: "/files" },
   { path: "/files", name: "files", component: FilesView },
   { path: "/pdf", name: "pdf", component: PDFView },
+  { path: "/:catchAll(.*)", redirect: "/files" },
 ];
 
 const router = createRouter({
