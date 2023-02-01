@@ -14,7 +14,6 @@ import { createApp } from "vue";
 import { registerPlugins } from "@/plugins";
 
 const app = createApp(App);
-
 registerPlugins(app);
-
+app.provide("axios", app.config.globalProperties.axios);
 app.mount("#app");

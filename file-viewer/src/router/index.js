@@ -1,10 +1,15 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../views/HomeView.vue";
+import FilesView from "../views/FilesView.vue";
+import PDFView from "../views/PDFView.vue";
 
-const routes = [{ path: "/:path*", name: "home", component: Home }];
+const routes = [
+  { path: "/", redirect: "/files" },
+  { path: "/files", name: "files", component: FilesView },
+  { path: "/pdf", name: "pdf", component: PDFView },
+];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(),
   routes,
 });
 

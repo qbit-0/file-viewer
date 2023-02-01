@@ -1,10 +1,9 @@
 <template>
   <v-main>
     <v-container>
-      <h1>File Viewer</h1>
+      <h1>Simple File Viewer</h1>
     </v-container>
     <FileViewer />
-    <TestComponent />
   </v-main>
   <v-footer>
     <v-container>

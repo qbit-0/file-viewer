@@ -10,28 +10,56 @@
             class="no-uppercase"
             prepend-icon="mdi-arrow-up-bold"
             variant="plain"
-            @click="handleFolderUp($route, $router)"
+            @click="handleFolderUp"
           >
-            {{ $route.path }}
+            {{ currentDirPath }}
           </v-btn>
         </v-container>
-        <v-list-item prepend-icon="mdi-folder">
-          <router-link to="/folder1/folder2">
-            <v-list-item-title>folder1</v-list-item-title>
-          </router-link>
-        </v-list-item>
-        <v-list-item prepend-icon="mdi-file-pdf-box">
-          <v-list-item-title>file1.pdf</v-list-item-title>
-        </v-list-item>
+        <FileItem
+          v-for="file in files"
+          :key="file.name"
+          :file="file"
+        />
       </v-list>
     </v-card>
   </v-container>
 </template>
 
 <script setup>
-const handleFolderUp = (route, router) => {
-  router.push({ name: "home", params: { path: route.params.path.slice(0, -1)} });
+import { useRoute, useRouter } from 'vue-router';
+import { onMounted, watch, ref, computed } from 'vue';
+import {fetchDir} from "@/api"
+import FileItem from '@/components/FileItem.vue';
+
+const router = useRouter();
+const route = useRoute();
+const files = ref([]);
+
+const currentDirPath = computed(() =>  {
+  if (!route.query.path) {
+    return "/";
+  } else {
+    return "/" + route.query.path;
+  }
+});
+
+const updateDir = async () => {
+  const data = await fetchDir(route.query.path);
+  files.value = data;
 }
+
+onMounted(() => {
+  updateDir();
+});
+
+watch([route], () => {
+  updateDir();
+})
+
+const handleFolderUp = () => {
+  router.push({ name: "files", query: { path: route.query.path.split("/").slice(0, -1).join("/")} });
+}
+
 </script>
 
 <style>
