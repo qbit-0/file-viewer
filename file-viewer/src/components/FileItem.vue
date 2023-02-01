@@ -19,9 +19,7 @@ const icon = computed(() => {
   if (props.file.isDirectory) {
     return "mdi-folder";
   } else if (props.file.isFile) {
-    const fileType = props.file.name.substr(
-      props.file.name.lastIndexOf(".") + 1
-    );
+    const fileType = props.file.name.split(".").slice(-1)[0];
     switch (fileType) {
       case "pdf":
         return "mdi-file-pdf-box";
