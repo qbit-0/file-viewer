@@ -10,7 +10,7 @@
             class="no-uppercase"
             prepend-icon="mdi-arrow-up-bold"
             variant="plain"
-            @click="handleFolderUp"
+            :to="folderUpHref"
           >
             {{ currentDirPath }}
           </v-btn>
@@ -26,16 +26,16 @@
 </template>
 
 <script setup>
-import { useRoute, useRouter } from 'vue-router';
-import { onMounted, watch, ref, computed } from 'vue';
-import {fetchDir} from "@/api"
-import FileItem from '@/components/FileItem.vue';
+import { useRoute, useRouter } from "vue-router";
+import { onMounted, watch, ref, computed } from "vue";
+import { fetchDir } from "@/api";
+import FileItem from "@/components/FileItem.vue";
 
 const router = useRouter();
 const route = useRoute();
 const files = ref([]);
 
-const currentDirPath = computed(() =>  {
+const currentDirPath = computed(() => {
   if (!route.query.path) {
     return "/";
   } else {
@@ -46,26 +46,30 @@ const currentDirPath = computed(() =>  {
 const updateDir = async () => {
   const data = await fetchDir(route.query.path);
   files.value = data;
-}
+};
 
 onMounted(() => {
   updateDir();
 });
 
-watch([route], () => {
+watch(route, () => {
   updateDir();
-})
+});
 
-const handleFolderUp = () => {
-  if (route.query) {
-    router.push({ name: "files", query: { path: route.query.path.split("/").slice(0, -1).join("/")} });
+const folderUpHref = computed(() => {
+  if (route.query.path) {
+    return router.resolve({
+      name: "files",
+      query: { path: route.query.path.split("/").slice(0, -1).join("/") },
+    }).href;
+  } else {
+    return route.fullPath;
   }
-}
-
+});
 </script>
 
 <style>
-  .no-uppercase {
-    text-transform: unset !important;
-  }
+.no-uppercase {
+  text-transform: unset !important;
+}
 </style>

@@ -1,14 +1,15 @@
 <template>
   <v-list-item
     :prepend-icon="icon"
-    @click="handleFileClick"
+    :to="fileClickHref"
+    :active="false"
   >
     <v-list-item-title>{{ file.name }}</v-list-item-title>
   </v-list-item>
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed} from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 const props = defineProps({ file: { type: Object, required: true } });
@@ -31,8 +32,8 @@ const icon = computed(() => {
   }
 });
 
-const handleFileClick = async () => {
-  let nextPath;
+const fileClickHref = computed(() => {
+let nextPath;
   if (!route.query.path) {
     nextPath = props.file.name;
   } else {
@@ -40,18 +41,24 @@ const handleFileClick = async () => {
   }
 
   if (props.file.isDirectory) {
-    router.push({ name: "files", query: { path: nextPath } });
+    return router.resolve({ name: "files", query: { path: nextPath } }).href;
   } else if (props.file.isFile) {
     const fileType = props.file.name.substr(
       props.file.name.lastIndexOf(".") + 1
     );
     switch (fileType) {
       case "pdf":
-        router.push({ name: "pdf", query: { path: nextPath } });
-        break;
+        return router.resolve({ name: "pdf", query: { path: nextPath } }).href;
       default:
-        break;
+        return route.fullPath;
     }
+  } else {
+    return route.fullPath;
   }
-};
+});
+
 </script>
+
+<style>
+
+</style>
