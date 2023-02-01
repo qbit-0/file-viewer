@@ -3212,6 +3212,7 @@
           "https://mozilla.github.io",
           "https://www.w3.org",
           "http://localhost:3000",
+          "http://127.0.0.1:3000/",
           "https://fileviewer.duypham.tech"
         ];
         var validateFileURL = function (file) {
